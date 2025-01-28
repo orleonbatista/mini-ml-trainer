@@ -1,0 +1,75 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: mini-ml-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - TRAINER_URL=http://trainer:8001
+      - PREDICT_URL=http://predict:8002
+    depends_on:
+      - trainer
+      - predict
+    networks:
+      - mini-ml-network
+    volumes:
+      - shared-data:/shared-data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile.trainer
+    container_name: mini-ml-trainer
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    networks:
+      - mini-ml-network
+    volumes:
+      - shared-data:/shared-data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  predict:
+    build:
+      context: .
+      dockerfile: Dockerfile.predict
+    container_name: mini-ml-predict
+    ports:
+      - "8002:8002"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+    networks:
+      - mini-ml-network
+    volumes:
+      - shared-data:/shared-data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  mini-ml-network:
+    driver: bridge
+
+volumes:
+  shared-data:
+    driver: local

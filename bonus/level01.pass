@@ -1,0 +1,96 @@
+orleon@Notebook-Orleon:/mnt/c/Users/orleo/OneDrive/Documentos/ifood-ml-platform-hiring-test-master/bonus$ strings level01
+/lib64/ld-linux-x86-64.so.2
+libc.so.6
+__isoc99_scanf
+puts
+__stack_chk_fail
+printf
+__cxa_finalize
+strcmp
+__libc_start_main
+GLIBC_2.7
+GLIBC_2.4
+GLIBC_2.2.5
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+u/UH
+1F00d{P1H
+3c3_0f_CH
+4k3}
+[]A\A]A^A_
+Enter your secret password:
+Well Done! This is the password: %s
+This is not the password :(
+;*3$"
+GCC: (Ubuntu 8.3.0-6ubuntu1) 8.3.0
+crtstuff.c
+deregister_tm_clones
+__do_global_dtors_aux
+completed.7963
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+level01.c
+__FRAME_END__
+__init_array_end
+_DYNAMIC
+__init_array_start
+__GNU_EH_FRAME_HDR
+_GLOBAL_OFFSET_TABLE_
+__libc_csu_fini
+_ITM_deregisterTMCloneTable
+puts@@GLIBC_2.2.5
+_edata
+__stack_chk_fail@@GLIBC_2.4
+printf@@GLIBC_2.2.5
+__libc_start_main@@GLIBC_2.2.5
+__data_start
+strcmp@@GLIBC_2.2.5
+__gmon_start__
+__dso_handle
+_IO_stdin_used
+__libc_csu_init
+__bss_start
+main
+__isoc99_scanf@@GLIBC_2.7
+__TMC_END__
+_ITM_registerTMCloneTable
+__cxa_finalize@@GLIBC_2.2.5
+.symtab
+.strtab
+.shstrtab
+.interp
+.note.gnu.build-id
+.note.ABI-tag
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.dynamic
+.data
+.bss
+.comment
+
+orleon@Notebook-Orleon:/mnt/c/Users/orleo/OneDrive/Documentos/ifood-ml-platform-hiring-test-master/bonus$ ltrace ./level01
+printf("Enter your secret password: ")                                                                                         = 28
+__isoc99_scanf(0x55e226478025, 0x7ffc117aecb0, 0, 0x55e226478024Enter your secret password: 123
+)                                                              = 1
+strcmp("123", "1F00d{P13c3_0f_C4k3}")                                                                                          = -20
+puts("This is not the password :("This is not the password :(
+)                                                                                            = 28
++++ exited (status 1) +++
+
+Password: 1F00d{P13c3_0f_C4k3}

@@ -1,0 +1,29 @@
+Eu extrai e analisei o código extraído do level02 com o ghidra software de engenharia reversa desenvolvido pela NSA(https://ghidra-sre.org/). 
+
+A senha precisa ter exatamente 21 caracteres:
+
+sVar1 = strlen(local_28);
+if (sVar1 == 0x15) { // 0x15 == 21
+
+
+O programa começa com local_30 = 0x1337 e aplica o cálculo para cada caractere da senha:
+
+local_30 = local_30 ^ (local_28[i] * 0x1234);
+
+No final, verifica se o valor de local_30 é igual a 0xa48b7 para validar a senha:
+
+if (local_30 == 0xa48b7) {
+    printf("Well Done! This is the password: %s\n", local_28);
+}
+
+
+A partir disso, desenvolvi um script (Add referencia ao script level02.py) que replica esse cálculo em Python. Ele gera todas as combinações possíveis de senhas de 21 caracteres, restringindo-se a caracteres alfanuméricos e símbolos comuns para otimizar o processo. Para cada senha gerada, o script calcula local_30 e testa diretamente no programa level02 usando o comando subprocess, enviando a senha como entrada.
+
+Se a senha for aceita, o programa retorna a mensagem de sucesso, e o script exibe a senha correta. Essa abordagem combina análise lógica do código com automação e foi fundamental para chegar à solução, testando de forma eficiente até encontrar uma senha válida.
+
+
+Por fim testei a senha encontrada novamente diretamente no desafio:
+
+orleon@Notebook-Orleon:/mnt/c/Users/orleo/OneDrive/Documentos/ifood-ml-platform-hiring-test-master/bonus$ ./level02
+Enter your secret password: AAAAAAAAAAAAAAAAAABY{
+Well Done! This is the password: AAAAAAAAAAAAAAAAAABY{
