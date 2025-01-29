@@ -1,0 +1,98 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-01-28T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.7.0",
+  "resources": [
+    {
+      "_id": "wrk_1234567890",
+      "created": 1672531200000,
+      "description": "Collection for API calls",
+      "modified": 1672531200000,
+      "name": "API Collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_1234567890",
+      "created": 1672531200000,
+      "data": {
+        "base_url": "http://localhost:8000",
+        "dataset_file": "iris.csv",
+        "input_file": "iris_predict.csv",
+        "target_column": "variety",
+        "columns_to_drop": "",
+        "model_type": "RandomForestClassifier",
+        "model_params": "{}"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "dataset_file",
+          "input_file",
+          "target_column",
+          "columns_to_drop",
+          "model_type",
+          "model_params"
+        ]
+      },
+      "name": "Base Environment",
+      "parentId": "wrk_1234567890",
+      "_type": "environment"
+    },
+    {
+      "_id": "req_train_model",
+      "created": 1672531200000,
+      "headers": [
+        { "name": "accept", "value": "application/json" },
+        { "name": "Content-Type", "value": "multipart/form-data" }
+      ],
+      "method": "POST",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          { "name": "dataset_file", "value": "{{ dataset_file }}", "type": "file" },
+          { "name": "model_type", "value": "{{ model_type }}" },
+          { "name": "model_params", "value": "{{ model_params }}" },
+          { "name": "target_column", "value": "{{ target_column }}" },
+          { "name": "columns_to_drop", "value": "{{ columns_to_drop }}" }
+        ]
+      },
+      "url": "{{ base_url }}/train",
+      "name": "Train Model",
+      "parentId": "wrk_1234567890",
+      "_type": "request"
+    },
+    {
+      "_id": "req_predict",
+      "created": 1672531200000,
+      "headers": [
+        { "name": "accept", "value": "application/json" },
+        { "name": "Content-Type", "value": "multipart/form-data" }
+      ],
+      "method": "POST",
+      "body": {
+        "mimeType": "multipart/form-data",
+        "params": [
+          { "name": "input_file", "value": "{{ input_file }}", "type": "file" },
+          { "name": "columns_to_drop", "value": "[\"variety\"]" }
+        ]
+      },
+      "url": "{{ base_url }}/predict",
+      "name": "Predict",
+      "parentId": "wrk_1234567890",
+      "_type": "request"
+    },
+    {
+      "_id": "req_health_check",
+      "created": 1672531200000,
+      "headers": [
+        { "name": "accept", "value": "application/json" }
+      ],
+      "method": "GET",
+      "url": "{{ base_url }}/",
+      "name": "Health Check",
+      "parentId": "wrk_1234567890",
+      "_type": "request"
+    }
+  ]
+}
