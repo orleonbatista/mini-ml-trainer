@@ -2,6 +2,14 @@
 
 Plataforma modular para treinamento e predição de modelos de Machine Learning, baseada em containers Docker.
 
+
+---
+
+## **Arquitetura e Funcionamento**
+A plataforma utiliza uma arquitetura baseada em **AWS** para garantir **escalabilidade, confiabilidade e eficiência de custos**.
+
+Para um detalhamento completo da arquitetura de predição e treinamento de modelos, consulte o arquivo [AWSArchitecture.md](AWSArchitecture.md).
+
 ---
 
 ## **Como Usar**
