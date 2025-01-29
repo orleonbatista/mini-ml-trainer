@@ -158,8 +158,8 @@ Os serviços estarão disponíveis nas seguintes portas:
   - Uso de volumes ou storage remoto para persistência e escalabilidade.
 - **Timeouts e Retentativas**:
   - Adicionar timeouts e lógica de retry nas comunicações HTTP.
-- **Testes de Integração**:
-  - Implementar testes ponta a ponta para validar fluxos principais.
+- **Testes de unidade**:
+  - Implementar e finalizar testes de unidade
 - **Gerenciamento de Logs**:
   - Centralizar logs detalhados para facilitar monitoramento.
 - **Configuração Baseada em Ambiente**:
