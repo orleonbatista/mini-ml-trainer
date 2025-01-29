@@ -125,7 +125,7 @@ Com base na análise do código, desenvolvi um script em **Python** para encontr
 O código tenta otimizar as combinações restringindo-se a **caracteres alfanuméricos e símbolos comuns**.
 
 ### **Referência ao Script**
-Consulte o código-fonte completo no arquivo [`level02.py`](level02.py).
+Consulte o código-fonte completo no arquivo [`level02.py`](bonus/level02.py).
 
 ---
 
