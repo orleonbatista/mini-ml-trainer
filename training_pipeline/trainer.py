@@ -23,7 +23,6 @@ class Trainer:
         self.model_params = model_params or {}
         self.model = None
 
-        # Guarda LabelEncoders para colunas categóricas
         self.label_encoders = {}
 
     def _drop_columns(self, data: pd.DataFrame, columns_to_drop: Optional[List[str]]) -> pd.DataFrame:
@@ -44,7 +43,6 @@ class Trainer:
         for col in data.select_dtypes(include=["object"]).columns:
             data[col] = data[col].fillna(data[col].mode()[0])
 
-        # Codificação das colunas categóricas
         for col in data.select_dtypes(include=["object"]).columns:
             le = LabelEncoder()
             data[col] = le.fit_transform(data[col])

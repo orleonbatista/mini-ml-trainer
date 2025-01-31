@@ -4,14 +4,47 @@ Plataforma modular para treinamento e predição de modelos de Machine Learning,
 
 ---
 
-## **Arquitetura e Funcionamento**
-A plataforma utiliza uma arquitetura baseada em **AWS** para garantir **escalabilidade, confiabilidade e eficiência de custos**.
+## **📌 Arquitetura e Funcionamento**
+A plataforma utiliza uma **arquitetura baseada em microserviços** para garantir **escalabilidade, confiabilidade e eficiência de custos**.
 
-Para um detalhamento completo da arquitetura de predição e treinamento de modelos, consulte a [Arquitetura](ARCHITECTURE.md).
+Ela se divide em **três serviços distintos**, rodando como containers separados:
+
+1. **API Service (`mini-ml-api`)**: Responsável por expor os endpoints REST e encaminhar requisições para os serviços adequados.
+2. **Trainer Service (`mini-ml-trainer`)**: Realiza o treinamento de modelos de Machine Learning e os salva para uso posterior.
+3. **Predict Service (`mini-ml-predict`)**: Carrega modelos treinados e realiza predições sobre novos dados.
+
+Cada serviço opera **de forma independente**, garantindo modularidade e escalabilidade.
+
+Para um detalhamento completo da arquitetura AWS de predição e treinamento de modelos, consulte a [Arquitetura](ARCHITECTURE.md).
 
 ---
 
-## **Como Usar**
+## **📌 Tecnologias Utilizadas**
+
+### **📌 Frameworks e Bibliotecas**
+| Tecnologia | Função |
+|------------|--------|
+| **FastAPI** | Framework web para criação dos serviços REST (API, Trainer e Predict) |
+| **Uvicorn** | Servidor ASGI leve e rápido para executar os serviços FastAPI |
+| **Scikit-learn** | Biblioteca principal para treinamento e inferência de modelos de ML |
+| **Pandas** | Manipulação de datasets e pré-processamento de dados |
+| **Joblib** | Serialização e persistência dos modelos treinados |
+| **Requests** | Comunicação entre microserviços via chamadas HTTP |
+| **Pydantic** | Validação de dados e tipagem para entrada das APIs |
+
+---
+
+### **📌 Infraestrutura e Containerização**
+| Tecnologia | Função |
+|------------|--------|
+| **Docker** | Containerização dos serviços |
+| **Docker Compose** | Orquestração dos containers, definindo dependências e comunicação entre serviços |
+| **Volumes Docker** | Compartilhamento de arquivos (modelos treinados) entre serviços |
+| **Redes Docker** | Comunicação eficiente entre os microserviços |
+
+---
+
+## **📌 Como Usar**
 
 ### **Pré-requisitos**
 - Docker instalado na máquina.
@@ -20,7 +53,7 @@ Para um detalhamento completo da arquitetura de predição e treinamento de mode
 
 ---
 
-## **Passos para Build e Execução**
+### **📌 Passos para Build e Execução**
 
 1. **Clone o repositório**:
    ```sh
@@ -44,8 +77,7 @@ Para um detalhamento completo da arquitetura de predição e treinamento de mode
 
 ---
 
-## **Executando Testes**
-
+## **📌 Executando Testes**
 1. **Rodar os testes unitários e de integração**:
    ```sh
    pytest
@@ -55,7 +87,7 @@ Para um detalhamento completo da arquitetura de predição e treinamento de mode
 
 ---
 
-## **Testando a API via Swagger**
+## **📌 Testando a API via Swagger**
 
 O **Swagger UI** fornece uma interface interativa para testar os endpoints sem precisar usar `curl` ou Postman.
 
@@ -73,8 +105,7 @@ O **Swagger UI** fornece uma interface interativa para testar os endpoints sem p
 
 ---
 
-## **Testando a API via cURL**
-
+## **📌 Testando a API via cURL**
 Os arquivos de exemplo estão disponíveis no diretório **`samples/`** para facilitar os testes.
 
 ### **1. Treinamento de Modelo**
@@ -91,25 +122,6 @@ curl -X 'POST' \
   -F 'columns_to_drop='
 ```
 
-#### **Campos do Payload (`/train`)**
-| Campo          | Tipo              | Obrigatório | Descrição |
-|---------------|------------------|------------|-----------|
-| `dataset_file` | Arquivo CSV (`multipart/form-data`) | ✅ | Arquivo CSV contendo os dados de treinamento. |
-| `model_type` | String | ✅ | Tipo do modelo a ser treinado. **Opções:** `RandomForestClassifier`, `RandomForestRegressor`, `LogisticRegression`. |
-| `model_params` | String (JSON) | ❌ | Parâmetros do modelo em JSON. Exemplo: `{"n_estimators": 100, "max_depth": 10}`. Se não informado, os valores padrão do modelo serão usados. |
-| `target_column` | String | ✅ | Nome da coluna do dataset que será usada como variável alvo (`target`). Se não informada, a última coluna do dataset será usada. |
-| `columns_to_drop` | String (Lista) | ❌ | Lista de colunas a serem removidas antes do treinamento. Exemplo: `"id, timestamp"`.|
-
-#### **Resposta Esperada**
-```json
-{
-  "metrics": {
-    "accuracy": 1
-  },
-  "model_path": "/shared-data/models/model.pkl"
-}
-```
-
 ---
 
 ### **2. Predição com Modelo Treinado**
@@ -123,28 +135,9 @@ curl -X 'POST' \
   -F 'columns_to_drop=["variety"]'
 ```
 
-#### **Campos do Payload (`/predict`)**
-| Campo          | Tipo              | Obrigatório | Descrição |
-|---------------|------------------|------------|-----------|
-| `input_file` | Arquivo CSV (`multipart/form-data`) | ✅ | Arquivo CSV contendo os dados de entrada para predição. |
-| `columns_to_drop` | String (Lista) | ❌ | Lista de colunas a serem removidas antes da predição. Exemplo: `"variety"`. |
-
-#### **Resposta Esperada**
-```json
-{
-  "predictions": [
-    0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
-    1, 0, 0, 0, 0, 2, 2, 2, 2, 2,
-    2, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0
-  ]
-}
-```
-
 ---
 
-## **Acessando os Serviços Manualmente**
-
+## **📌 Acessando os Serviços Manualmente**
 Os serviços estarão disponíveis nas seguintes portas:
 
 - **API Principal (`API Gateway`)**: [`http://localhost:8000`](http://localhost:8000)
@@ -153,7 +146,7 @@ Os serviços estarão disponíveis nas seguintes portas:
 
 ---
 
-## **Considerações Futuras**
+## **📌 Melhorias Futuras**
 - **Versionamento de Modelos**:
   - Armazenar modelos em storage remoto com controle de versão.
   - Permitir seleção de modelos por versão.
@@ -178,6 +171,7 @@ Os serviços estarão disponíveis nas seguintes portas:
 - **Escalabilidade**:
   - Migrar para ECS ou Kubernetes para maior resiliência e escalabilidade.
 
+---
 
-## **Bonus**
-
+## **📌 Bônus**
+Para verificar os desafios bônus, acesse essa [doc](BONUS.md).

@@ -8,7 +8,6 @@ from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 from sklearn.linear_model import LogisticRegression
 import logging
 
-# Configuração de logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -73,14 +72,11 @@ async def train(
     - **400**: Erro no formato do arquivo ou nos dados fornecidos.
     - **500**: Erro no treinamento ou ao carregar o dataset padrão.
     """
-    # Verificar se o modelo existe no MODEL_FACTORY
     if model_type not in MODEL_FACTORY:
         raise HTTPException(status_code=400, detail="Modelo não suportado.")
 
-    # Instanciar o gerenciador de datasets
     dataset_manager = DatasetManager(default_dataset="iris")
 
-    # Carregar o dataset (local ou default)
     if dataset_file:
         try:
             data = pd.read_csv(dataset_file.file)
@@ -96,27 +92,22 @@ async def train(
             logger.error(f"Erro ao carregar o dataset padrão: {e}")
             raise HTTPException(status_code=500, detail=f"Erro ao carregar o dataset padrão: {e}")
 
-    # Determinar a coluna alvo (target_column)
     if target_column is None:
-        target_column = data.columns[-1]  # Última coluna
+        target_column = data.columns[-1]
         logger.info(f"Coluna alvo não especificada. Usando a última coluna: {target_column}.")
     elif target_column not in data.columns:
         logger.error(f"A coluna alvo '{target_column}' não foi encontrada no dataset.")
         raise HTTPException(status_code=400, detail=f"Coluna alvo '{target_column}' não encontrada no dataset.")
 
-    # Pré-processar dados
     columns_to_drop_list = parse_columns_to_drop(columns_to_drop)
     model_params_dict = parse_model_params(model_params)
     model_class = MODEL_FACTORY[model_type]
 
-    # Configurar Trainer
     trainer = Trainer(
         model_dir="/shared-data/models",
         model_class=model_class,
         model_params=model_params_dict
     )
-
-    # Executar o treinamento
     try:
         metrics, model_path = trainer.train(
             data=data,

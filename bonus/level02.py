@@ -30,7 +30,6 @@ def find_and_test_password():
     target_value = 0xa48b7
     password_length = 21
 
-    # Consider only alphanumeric and common special characters
     valid_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[];:'\"<>,.?/|"
 
     for candidate in itertools.product(valid_chars, repeat=password_length):
@@ -44,7 +43,6 @@ def find_and_test_password():
     return None, None
 
 if __name__ == "__main__":
-    # Continuously find and test passwords until level02 accepts one
     password, output = find_and_test_password()
     if password:
         print(f"Senha aceita pelo level02: {password}")
